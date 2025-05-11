@@ -1,0 +1,32 @@
+Field,Value
+Title,"People Receiving Homeless Response Services by Age, Race, and Gender"
+URL,homelessness-demographics
+Description,"Yearly statewide and by-Continuum of Care total counts of individuals receiving homeless response services by age group, race, and gender. 
+
+This data comes from the Homelessness Data Integration System (HDIS), a statewide data warehouse which compiles and processes data from all 44 California Continuums of Care (CoC)—regional homelessness service coordination and planning bodies. Each CoC collects data about the people it serves through its programs, such as homelessness prevention services, street outreach services, permanent housing interventions and a range of other strategies aligned with California’s Housing First objectives.
+
+The dataset uploaded reflects the 2024 HUD Data Standard Changes.  Previously, Race and Ethnicity are separate files but are now combined.
+
+Information updated as of 2/06/2025."
+Tags,"Age Group,Continuum of Care,Demographics,Ethnicity,Gender,Homelessness,Race"
+License,cc-zero
+Topics,Health and Human Services
+Organization,California Interagency Council on Homelessness
+Public Access Level,Public
+Rights,No restrictions on Public Use
+Program Contact Name,Homelessness Data Integration System
+Program Contact Email,hdis@bcsh.ca.gov
+Author,California Interagency Council on Homelessness
+Homepage URL,https://bcsh.ca.gov/calich/hdis.html
+Frequency,Quarterly
+Temporal Coverage,2017-01-01 to 2024-09-30
+Granularity,Continuum of Care (CoC)
+Geographic Coverage Location,California
+Spatial,Statewide
+Data Standard,
+Language,English
+Source Link,
+Additional Information,"Definition of Experiencing Homelessness: People are considered to be “experiencing homelessness” at any point in the selected time frame if they: 1) accessed lodging services through Emergency Shelter, Transitional Housing, and/or Safe Haven projects: 2) entered into a permanent housing project from homelessness (i.e., Permanent Supportive Housing, Housing Only, Housing with Services, Rapid Re-Housing); or 3) reported living in a homeless situation (e.g., they are living in a place not meant for habitation, such as a vehicle) at the time they accessed other services. This is an expanded version of the definition employed by the US Department of Housing and Urban Development (HUD). When determining the number of people experiencing homelessness in the homelessness response system for the Annual Point-in-Time Count, HUD only counts people accessing Emergency Shelter, Transitional Housing, and/or Safe Haven services."
+Related Resources,"Homeless Data Integration System (HDIS): HDIS includes Federally-required data collected from all service providers that participate in CoCs’ local Homeless Management Information Systems (HMIS). However, not all providers participate in HMIS. Independent providers that do not receive Federal funding or certain State funding can opt out of participation in local HMIS. Dedicated domestic violence victim service providers are barred by Federal law from entering their clients’ data into HMIS and maintain separate data systems. Some permanent housing programs for veterans are also captured in a separate data system from HMIS. Additionally, not all people experiencing homelessness are captured in HDIS. People experiencing homelessness who do not access services are not captured in local HMIS or HDIS. Certain unaccompanied youth providers may not be allowed to share complete client data with HDIS. Data not currently available for Tehama County CoC and Lake County CoC. Yuba/Sutter CoC is not included in the data for years 2017-2020, and race and ethnicity data for this CoC is excluded for all years. Alpine, Inyo, Mono Counties CoC is not included for the years 2017-2021."
+Secondary Sources,
+Citation,
