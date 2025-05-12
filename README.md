@@ -4,7 +4,7 @@ Plots of open access data.
 
 ## Setup
 
-```python
+```shell
 python -m venv venv
 . venv/bin/activate
 pip install --upgrade pip
