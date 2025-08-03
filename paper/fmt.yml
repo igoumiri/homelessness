@@ -1,0 +1,20 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80                    # Wrap at 80 characters
+        huge: "overflow"              # How to handle very long words
+        separator: ""                 # Character to use for line continuation
+        perCodeBlockBasis: 0          # Apply to all code blocks
+        all: 1                        # Apply to all environments
+        
+    # Enable text wrapping for specific environments
+    environments:
+        quotation: 1
+        verse: 1
+        
+    # Enable for commands
+    commands:
+        item: 1
+        
+    # Enable for special code blocks
+    specialBeginEnd:
+        displayMath: 1
