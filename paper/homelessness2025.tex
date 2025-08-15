@@ -134,167 +134,24 @@ This counterfactual analysis helps to isolate the potential impact of local stra
 
 \section{Results and Discussion}
 
-This section presents the empirical findings of the analysis, interprets the results from the statistical models, discusses their implications for CoC effectiveness, and concludes with policy recommendations, acknowledged limitations, and directions for future research.
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/feature_combos}
+    \caption{
+        \label{fig:features}
+        Random Forest performance by feature combination.
+    }
+\end{figure}
 
-\subsection{Key Descriptive Statistics}
-
-A foundational step in the analysis involved generating key descriptive statistics for all variables. This included the mean, median, standard deviation, and minimum/maximum values for older adult homelessness counts, total CoC population, 65+ population, geographical features (CoC centroid latitudes/longitudes), and other covariates such as median rent, median income, housing vacancy rates, and unemployment rates. Visualizations, including histograms, were used to illustrate the distributions of homelessness counts and population variables, revealing their inherent skewness and range. Scatter plots were also employed to show initial bivariate relationships between key predictors, such as population and median rent, and older adult homelessness counts, helping to identify potential non-linearities or outliers~\cite{field2013discovering}. This initial examination of descriptive statistics and visualizations serves as a critical quality check, helping to identify any data errors or anomalies that might have been missed during cleaning. Furthermore, observing unusually high or low 65+ homelessness counts in specific CoCs, or unexpected distributions, can signal either unique local challenges or successes, or underlying data quality issues that warrant further investigation, thereby informing the subsequent model interpretation.
-
-The descriptive analysis consistently highlighted the observed aging trend in California's homeless population. The data illustrated a clear increase in the proportion of individuals aged 65 and over within the total homeless population across the analyzed years~\cite{terner2023older}. This demographic shift reinforces the urgency and relevance of focusing on the older adult population in this study.
-
-\subsection{Model Performance and Validation}
-
-The predictive performance of the Random Forest and ANCOVA models was rigorously compared using several key metrics, including $R^2$ (and Adjusted $R^2$ for ANCOVA), Mean Absolute Error (MAE), and Root Mean Squared Error (RMSE). The analysis of these metrics indicated which model demonstrated superior predictive accuracy, and the reasons for this difference were explored. For instance, if Random Forest consistently outperformed ANCOVA, it suggested that the drivers of homelessness involve complex, non-linear interactions or thresholds that a simpler linear model cannot adequately capture~\cite{field2013discovering}. This provides valuable insight into the inherent complexity of the social phenomenon being studied. Conversely, if both models performed similarly, it might indicate that linear relationships are dominant. This rigorous evaluation strengthens the overall credibility and the "rigorous statistical analysis" aspect of the research.
-
-The impact of using raw population versus log-transformed population on model performance for both Random Forest and ANCOVA was also analyzed. The log transformation, which compresses larger values and spreads smaller ones, was evaluated for its effectiveness in improving model fit, reducing residual skewness, and addressing heteroscedasticity, particularly for the ANCOVA model~\cite{hospitality2024log}. The results showed that for ANCOVA, the log transformation generally improved the satisfaction of linear regression assumptions and led to more robust coefficient estimates. For Random Forest, while less sensitive to distributional assumptions, the transformation sometimes contributed to marginal improvements in performance or stability.
-
-A K-fold cross-validation strategy was employed to ensure the robustness and generalizability of the model performance estimates. This method involved partitioning the data into K subsets, training the model on K-1 subsets, and evaluating it on the held-out subset, repeating this process K times. This approach provides a more reliable estimate of how the models would perform on unseen data, mitigating the risk of overfitting to the training data.
-
-\begin{table}[htbp]
-\centering
-\caption{Comparative Model Performance Metrics (Illustrative Example)}
-\label{tab:model_performance}
-\begin{tabular}{l l c c c}
-\toprule
-\textbf{Model} & \textbf{Population Feature} & \textbf{$R^2$} & \textbf{MAE} & \textbf{RMSE} \\
-\midrule
-Random Forest & Raw Population & 0.78 & 150 & 280 \\
-Random Forest & Log(Population) & 0.82 & 135 & 250 \\
-ANCOVA & Raw Population & 0.65 & 210 & 350 \\
-ANCOVA & Log(Population) & 0.72 & 180 & 300 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Significant Predictors of Older Adult Homelessness}
-
-The analysis identified several significant predictors of older adult homelessness, providing insights from both the Random Forest and ANCOVA models.
-
-\subsubsection{Random Forest Feature Importance}
-The Random Forest model provided a ranking of features based on their importance in predicting older adult homelessness. The top most influential features, as determined by both Gini Importance (Mean Decrease in Impurity) and Permutation Feature Importance (Mean Decrease in Accuracy), consistently included population density, median rent, and the proportion of single-person households. Gini Importance indicated that features related to housing affordability and the age structure of the population were consistently critical in splitting nodes and reducing impurity~\cite{ibm2025randomforest, numberanalytics2025importance}. Permutation Importance, by contrast, showed that shuffling these same features led to the most significant drop in model accuracy, confirming their substantial independent contribution to predictive power~\cite{ibm2025randomforest, numberanalytics2025importance}. This analysis highlighted that factors beyond simple population size, such as housing market dynamics and demographic composition, are crucial drivers of older adult homelessness.
-
-\begin{table}[htbp]
-\centering
-\caption{Random Forest Feature Importance Rankings (Illustrative Example)}
-\label{tab:rf_importance}
-\begin{tabular}{l l c c}
-\toprule
-\textbf{Rank} & \textbf{Feature} & \textbf{Gini Importance (Normalized)} & \textbf{Permutation Importance (Normalized)} \\
-\midrule
-1 & $\log(\text{Population})$ & 1.00 & 1.00 \\
-2 & Median Rent & 0.85 & 0.78 \\
-3 & Proportion of 65+ Population & 0.72 & 0.65 \\
-4 & Unemployment Rate & 0.60 & 0.55 \\
-5 & Housing Vacancy Rate & 0.48 & 0.42 \\
-6 & CoC Centroid Latitude & 0.35 & 0.30 \\
-7 & Adjacency to Major Urban CoC & 0.28 & 0.25 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsubsection{ANCOVA Model Coefficients and Significance}
-The ANCOVA model provided insights into the linear relationships between predictors and older adult homelessness after controlling for population. Statistically significant coefficients were observed for several variables. For instance, median rent exhibited a significant positive coefficient, indicating that, all else being equal, higher median rents are linearly associated with an increase in older adult homelessness counts~\cite{field2013discovering}. Similarly, a higher proportion of the 65+ population within a CoC also showed a significant positive linear relationship with homelessness counts. The unemployment rate also had a positive coefficient, suggesting that economic instability contributes to increased homelessness. Conversely, the housing vacancy rate showed a negative, albeit less significant, coefficient, implying that greater housing availability might correlate with lower homelessness.
-
-\begin{table}[htbp]
-\centering
-\caption{ANCOVA Model Coefficients and Significance (Illustrative Example)}
-\label{tab:ancova_coefficients}
-\begin{tabular}{l c c c p{0.3\textwidth}}
-\toprule
-\textbf{Feature} & \textbf{Coefficient} & \textbf{Standard Error} & \textbf{$p$-value} & \textbf{Interpretation} \\
-\midrule
-Intercept & 15.2 & 3.1 & $<$0.001 & Baseline homelessness when other predictors are zero (context-dependent) \\
-$\log(\text{Population})$ & 0.75 & 0.05 & $<$0.001 & For every 1\% increase in population, homelessness increases by 0.75\% (approx.) \\
-Median Rent (\$100s) & 0.82 & 0.12 & $<$0.001 & For every \$100 increase in median rent, homelessness increases by 0.82 units \\
-Proportion of 65+ Population & 12.5 & 2.0 & $<$0.001 & For every 1\% increase in 65+ population proportion, homelessness increases by 12.5 units \\
-Unemployment Rate (\%) & 0.68 & 0.15 & 0.002 & For every 1\% increase in unemployment, homelessness increases by 0.68 units \\
-Housing Vacancy Rate (\%) & -0.35 & 0.20 & 0.081 & (Marginally significant) Higher vacancy rate associated with slightly lower homelessness \\
-CoC Centroid Latitude & -0.10 & 0.08 & 0.210 & Not statistically significant linear effect \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsubsection{Synthesis Across Models}
-A comprehensive synthesis of the insights from both models revealed common themes and highlighted nuanced relationships. Features like population size, median rent, and the proportion of the 65+ population consistently emerged as highly influential across both Random Forest's importance rankings and ANCOVA's significant coefficients. This strong agreement provides robust evidence that these factors are fundamental drivers of older adult homelessness in California, aligning with existing research that points to housing affordability and economic conditions as primary contributors~\cite{ppic2025homelessness, huduser2019market, culhane2024learning}.
-
-Any discrepancies between the models were carefully examined. For example, while CoC centroid latitude might show some importance in the Random Forest model (suggesting complex spatial patterns or regional clusters not captured by a simple linear relationship), its coefficient in ANCOVA might not be statistically significant. This indicates that its influence might be mediated by other factors or involve non-linear spatial effects (e.g., urban density effects) that a linear model cannot fully capture. This multi-model perspective offers a richer, more nuanced understanding of the factors driving older adult homelessness, helping to avoid oversimplified conclusions about feature importance~\cite{field2013discovering}. By synthesizing the feature importance from Random Forest and the coefficients from ANCOVA, the analysis moves beyond mere correlation to infer more robust causal pathways. For instance, the consistent identification of median rent as a major driver across both models provides strong evidence that higher rental costs are a direct and substantial contributor to increased homelessness, corroborating existing research~\cite{ppic2025homelessness, huduser2019market, culhane2024learning}.
-
-\subsection{Continuum of Care Effectiveness Rankings and Insights}
-
-The core of this study's policy contribution lies in the Continuum of Care (CoC) effectiveness ranking, derived from the "prediction set" approach. This methodology enabled a more equitable comparison of CoCs by standardizing key confounding variables, such as population and economic conditions, and then predicting homelessness counts under these controlled scenarios.
-
-\begin{table}[htbp]
-\centering
-\caption{Predicted Homelessness Counts and CoC Effectiveness Ranking (Illustrative Example)}
-\label{tab:coc_effectiveness}
-\begin{tabular}{l l c c c p{0.2\textwidth}}
-\toprule
-\textbf{Rank} & \textbf{CoC Name} & \textbf{Actual 65+ Homelessness Count} & \textbf{Predicted 65+ Homelessness Count (Standardized Conditions)} & \textbf{Difference (Actual - Predicted)} & \textbf{Effectiveness Interpretation} \\
-\midrule
-1 & CA-XXX (CoC A) & 250 & 350 & -100 & More Effective (Actual $<$ Predicted) \\
-2 & CA-YYY (CoC B) & 400 & 450 & -50 & More Effective (Actual $<$ Predicted) \\
-... & ... & ... & ... & ... & ... \\
-20 & CA-ZZZ (CoC C) & 600 & 580 & +20 & Less Effective (Actual $>$ Predicted) \\
-... & ... & ... & ... & ... & ... \\
-40 & CA-AAA (CoC D) & 1200 & 800 & +400 & Less Effective (Actual $>$ Predicted) \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-The analysis identified CoCs that appeared to be performing "better than expected," meaning their actual homelessness counts for older adults were lower than their predicted counts under standardized conditions. For example, CoC A consistently showed a negative difference (Actual $<$ Predicted), suggesting that its local strategies and interventions were more effective in mitigating older adult homelessness, even when accounting for similar external socioeconomic and demographic pressures. Potential reasons for their success may include strong coordinated entry systems, robust Housing First programs, or effective homelessness prevention units~\cite{capolicylab2025hpu, huduser2000coc, pubmed2021effectiveness}. These high-performing CoCs serve as potential models for best practices and knowledge transfer across the state.
-
-Conversely, the analysis also identified CoCs performing "worse than expected," where their actual homelessness counts were higher than predicted under standardized conditions. For instance, CoC D consistently exhibited a large positive difference (Actual $>$ Predicted). This indicates that these CoCs might face greater internal challenges, or their current interventions may be less effective in addressing older adult homelessness relative to their contextual factors. These CoCs represent areas where targeted support, increased funding, or strategic intervention and re-evaluation of programs might be most beneficial.
-
-The overall distribution of effectiveness across CoCs revealed a spectrum of performance, with some regional patterns observed. For example, CoCs in certain high-cost urban areas, even after accounting for population and median rent, still showed higher-than-predicted homelessness, suggesting that the scale of the housing crisis might overwhelm even well-intentioned efforts. This section represents the most critical output for policy impact. The "effectiveness ranking," derived from the counterfactual prediction set approach, provides a data-driven benchmark for CoCs. It allows policymakers and stakeholders to identify high-performing CoCs as potential models for best practices and knowledge transfer, and conversely, to pinpoint low-performing CoCs as areas requiring targeted support, increased funding, or strategic intervention. This moves beyond merely describing the problem of homelessness to offering concrete, actionable guidance for resource allocation and program improvement.
-
-\subsection{Policy Implications and Recommendations}
-
-The findings from this data-driven assessment of CoC effectiveness carry significant policy implications for state and local governments, as well as CoC leadership in California. The analysis yields concrete, actionable recommendations aimed at mitigating and ultimately reducing homelessness among older adults.
-
-\begin{enumerate}
-    \item \textbf{Address Systemic Housing and Economic Factors:} The consistent emergence of housing affordability (e.g., median rent) and economic stability (e.g., unemployment rates) as significant predictors across both statistical models underscores the critical need to address these systemic factors as fundamental strategies to combat older adult homelessness~\cite{ppic2025homelessness, huduser2019market, terner2023older}. Policy efforts should prioritize increasing the supply of affordable housing, implementing rent stabilization measures, and expanding rental assistance programs to prevent older adults from falling into homelessness due to economic precarity.
-
-    \item \textbf{Tailored Interventions for the 65+ Age Group:} The unique vulnerabilities of older adults, including their increased health challenges, financial precarity, and the prevalence of late-onset homelessness, necessitate tailored interventions~\cite{terner2023older}. Recommendations include:
-    \begin{itemize}
-        \item \textbf{Expanded Eviction Prevention Programs:} Given that financial factors often precede homelessness for this group, robust and accessible eviction prevention services, including legal aid and emergency financial assistance, are crucial.
-        \item \textbf{Accessible Supportive Housing:} Development of housing models that integrate age-appropriate supportive services, addressing health, mobility, and social isolation needs.
-        \item \textbf{Streamlined Benefit Access:} Efforts to connect older adults to all eligible benefits (e.g., Social Security, SSI, Medicare/Medicaid) to stabilize their income and healthcare access.
-    \end{itemize}
-
-    \item \textbf{Leverage Data-Driven Decision-Making and Predictive Analytics:} The study demonstrates the power of combining public data with rigorous statistical analysis to derive actionable insights. State and local governments, and CoCs, should continue to invest in and refine data-driven decision-making processes and predictive analytics for early intervention and targeted prevention efforts. Successful models, such as the California Policy Lab's Homelessness Prevention Unit, which uses predictive modeling to identify and proactively reach out to high-risk individuals, offer a blueprint for effective, preventative strategies~\cite{capolicylab2025hpu}.
-
-    \item \textbf{Facilitate Best Practice Sharing and Knowledge Transfer:} The identified high-performing CoCs, whose actual homelessness counts were lower than predicted under standardized conditions, represent valuable sources of knowledge. Mechanisms should be established to facilitate the sharing of their successful strategies, program designs, and operational efficiencies across the state. This could include regular forums, detailed case studies, and funding for peer-to-peer learning initiatives.
-
-    \item \textbf{Enhance Accountability for Homelessness Program Funds:} Aligning with previous audit findings~\cite{ppic2025homelessness}, there is a clear need for increased accountability measures for homelessness program funds. The state should implement robust, standardized evaluation frameworks that track outcomes at the CoC level, ensuring that investments translate into measurable reductions in homelessness. This study’s methodology offers a potential framework for such evaluations. This section serves as the crucial bridge between academic research and practical policy. The recommendations are specific, actionable, and directly derived from the empirical findings, demonstrating the practical application of the mission to apply advanced analytical methods for positive social change.
-\end{enumerate}
-
-\subsection{Study Limitations}
-
-Despite the rigorous methodology employed, this study has several limitations that warrant acknowledgment.
-
-\begin{itemize}
-    \item \textbf{Data Limitations:} The primary homelessness data, derived from the Homelessness Data Integration System (HDIS), relies on individuals accessing services within CoCs~\cite{caopendatahomelessness}. This inherently leads to a potential undercounting of unsheltered individuals who do not engage with formal service systems~\cite{culhane2024learning, caopendatahomelessness}. Consequently, the reported homelessness counts may not fully represent the true scale of the problem, and CoCs that are more effective at outreach and engagement might appear to have higher counts due to better data capture. Specific CoC data gaps, such as the absence of data for Tehama and Lake Counties, and limitations for Yuba/Sutter and Alpine/Inyo/Mono CoCs, also affect the comprehensiveness of the dataset~\cite{caopendatahomelessness}. The reliance on reported service data might influence the representativeness of the homeless population captured, potentially skewing the understanding of "effectiveness." Explicitly stating these limitations is paramount for maintaining scientific integrity and credibility, managing reader expectations regarding the generalizability and certainty of the findings.
-
-    \item \textbf{Model Limitations:} While both Random Forest and ANCOVA offer distinct advantages, they also have limitations. ANCOVA relies on assumptions such as homogeneity of regression slopes and normality of residuals, which, despite efforts at log transformation, may not be perfectly met across all CoCs~\cite{realstatsancova, aatbioquestancova}. Random Forest, while powerful, can sometimes be perceived as a "black box" model, making the direct causal interpretation of individual feature effects challenging, even with feature importance metrics~\cite{molnar2022interpretable}. The study's efforts to enhance interpretability through the prediction set approach and comparative analysis mitigate, but do not entirely eliminate, this challenge.
-
-    \item \textbf{Causation vs. Correlation:} Even with the "prediction set" approach, which aims to approximate a controlled comparison by standardizing confounding variables, the study primarily identifies correlations rather than definitive causal relationships. While the methodology allows for a more equitable comparison of CoC performance by isolating the impact of local strategies from exogenous factors, it does not fully control for all unobserved variables or complex feedback loops inherent in social systems~\cite{molnar2022interpretable}.
-
-    \item \textbf{Geographical Data Simplification:} The representation of complex spatial patterns through simple CoC centroids (latitude/longitude) and a binary adjacency matrix is a simplification. While valuable, it may not fully capture the nuances of geographical influence, such as varying population densities within CoCs, or the strength of connectivity between neighboring areas (e.g., shared transportation networks, economic ties). More sophisticated spatial econometric models could further refine this aspect.
-\end{itemize}
-
-\subsection{Future Research Directions}
-
-Building upon the findings and limitations of this study, several avenues for future research emerge:
-
-\begin{enumerate}
-    \item \textbf{Incorporation of More Granular Data:} Future research could explore the integration of even more granular data, such as block-group level ACS data, to refine population estimates for CoCs, particularly for those that subdivide counties or include unincorporated areas. This would enhance the precision of population denominators and improve the accuracy of per-capita homelessness rates.
-    \item \textbf{Dynamic Analysis and Time-Series Modeling:} Extending the current cross-sectional analysis to a longitudinal study, incorporating time-series data on homelessness counts and relevant covariates, would enable the investigation of trends, the impact of policy changes over time, and the dynamic effectiveness of CoCs. This could involve panel data models or more advanced time-series forecasting techniques.
-    \item \textbf{Qualitative and Mixed-Methods Research:} To complement the quantitative findings, future research could incorporate qualitative methods, such as in-depth interviews with CoC leaders, service providers, and individuals experiencing homelessness. This would provide richer contextual understanding of the factors driving effectiveness or challenges, explaining the "why" behind the statistical patterns.
-    \item \textbf{Exploration of Additional Predictors:} Expanding the set of predictor variables to include more detailed information on CoC funding allocations, specific program types and capacities (e.g., number of rapid re-housing units, prevention slots), local housing policies (e.g., zoning laws, rent control), and healthcare access could provide a more comprehensive understanding of CoC performance.
-    \item \textbf{Advanced Spatial Econometrics:} To more fully account for spatial dependencies and spillover effects, future work could employ advanced spatial econometric models that explicitly model spatial autocorrelation in the error terms or the dependent variable, providing a more nuanced understanding of how neighboring CoCs influence each other.
-    \item \textbf{Causal Inference Techniques:} Exploring advanced causal inference techniques, such as difference-in-differences or instrumental variables, where appropriate data allows, could help move beyond correlation to establish more definitive causal links between CoC interventions and homelessness outcomes.
-    \item \textbf{Bias Detection and Fairness in AI Models:} Further research into the interpretability of machine learning models for social policy, focusing on detecting and mitigating biases within the data and model predictions, would be crucial. This aligns with the principles of ethical AI development and ensures that policy recommendations do not inadvertently perpetuate existing inequities.
-\end{enumerate}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/predicted_chart}
+    \includegraphics[width=0.65\linewidth]{figures/predicted_map}
+    \caption{
+        \label{fig:predicted}
+        Predicted homelessness counts per CoC if all CoCs had average population.
+    }
+\end{figure}
 
 \section{Acknowledgments}
 
