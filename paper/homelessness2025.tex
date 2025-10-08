@@ -58,7 +58,7 @@ Within this context, older adults (65+) are a growing and vulnerable demographic
 
 This study evaluates the performance of California's 44 Continuums of Care (CoCs), the regional bodies responsible for coordinating local homelessness responses~\cite{huduser2000coc}. CoC performance is known to be heterogeneous, influenced by factors both internal (e.g., funding, governance) and external (e.g., housing markets, population size) to the organization~\cite{preprints2025coc}.
 
-The primary objective is to evaluate CoC performance by comparing observed homelessness counts against a statistically derived expectation. To achieve this, we first develop predictive models based on population and geographic factors to establish a ``prediction set" for each CoC—a range of expected homelessness counts given its context. By comparing a CoC's actual count to its prediction set, we can identify which are performing better or worse than anticipated. This study employs a dual-modeling strategy: a Random Forest model, valued for its high predictive accuracy and ability to capture complex, non-linear interactions, and an Analysis of Covariance (ANCOVA) model, which offers a more traditional, interpretable framework for assessing the significance of each factor while controlling for others. This comparative approach allows for a more robust evaluation of CoC effectiveness.
+The primary objective is to evaluate CoC performance by comparing observed homelessness counts against a statistically derived expectation. To achieve this, we first develop a predictive model based on population and geographic factors to establish a ``prediction set" for each CoC—a range of expected homelessness counts given its context. By comparing a CoC's actual count to its prediction set, we can identify which are performing better or worse than anticipated. This study employs a Random Forest model, valued for its high predictive accuracy and ability to capture complex, non-linear interactions, to allow for a robust evaluation of CoC effectiveness.
 
 This work builds on other data-driven analyses of homelessness, such as HUD's studies of market factors~\cite{huduser2019market}, the California Policy Lab's predictive prevention models~\cite{capolicylab2025hpu}, and UCSF's large-scale surveys~\cite{ucsf2025studies}. Our contribution is the specific focus on the 65+ age group at the sub-state level in California and the use of a comparative modeling approach to identify relative CoC performance under controlled conditions. The goal is to produce interpretable results that can inform policy and resource allocation.
 
@@ -127,16 +127,8 @@ To account for spatial effects, two geographic features were constructed for eac
 
 \section{Analysis}
 
-\subsection{Modeling approach}
-The analysis employs two distinct modeling techniques to provide a comprehensive assessment. A Random Forest model is used for its strength in capturing complex, non-linear relationships and interactions between variables without strong distributional assumptions. This is complemented by an Analysis of Covariance (ANCOVA) model, which provides a more traditional linear framework to assess the impact of specific factors while controlling for covariates like population size~\cite{field2013discovering}. Using both models allows for a more robust interpretation: Random Forest identifies the most influential predictors overall, while ANCOVA offers clear insights into the direction and magnitude of linear relationships.
-
-\subsection{Feature selection and specification}
-To mitigate the potential for non-linearity and heteroscedasticity, all continuous features for the ANCOVA model were first normalized to a $[0,1]$ scale. Following normalization, a variety of transformations---including exponential, square root, and square ($x^2$)---were assessed. A modified logarithm transformation, $\log(x+1)$, was employed to prevent infinite results given the range of the normalized features. Beyond these individual transformations, we also considered cross-term interactions between features (both transformed and untransformed). The random forest model, being inherently robust to non-linear relationships, was trained on the untransformed data. Final model selection was based on a combination of superior performance metrics, such as a lower RMSE and a higher $R^2$, and for the ANCOVA, a better adherence to the assumptions of linear regression.
- 
-\subsection{Model interpretation}
-Insights were drawn by synthesizing the results from both models. For the Random Forest, feature importance was calculated using both Gini importance and permutation-based methods to produce a robust ranking of the predictors' influence on homelessness counts. For the ANCOVA model, the analysis focused on the estimated coefficients to determine the direction, magnitude, and statistical significance of each variable's linear relationship with the outcome, after controlling for other factors.
-
-Comparing the findings from both models provides a more nuanced understanding. For example, a variable with high importance in the Random Forest but a non-significant coefficient in the ANCOVA model may suggest a non-linear effect or an effect that is mediated through complex interactions with other variables.
+\subsection{Modeling and analysis}
+The analysis employs a Random Forest model for its strength in capturing complex, non-linear relationships and interactions between variables without strong distributional assumptions. This allows the model to identify the most influential predictors of homelessness counts. The model, being inherently robust to these relationships, was trained on the untransformed data. Model performance was evaluated using Root Mean Squared Error (RMSE) and R-squared ($R^2$). To interpret the model's findings, feature importance was calculated using both Gini importance and permutation-based methods to produce a robust ranking of the predictors' influence.
 
 \subsection{Evaluating CoC performance}
 To compare CoC performance on a more equitable basis, we use a ``prediction set" approach to control for external factors that are largely outside a CoC's control (e.g., population size, regional economic conditions). This method involves the following steps:
@@ -179,9 +171,6 @@ The analysis in \autoref{fig:feature_combinations_rmse} offers a more complex pi
         Random Forest performance across all feature combinations.
     }
 \end{figure}
-
-% TODO: ANCOVA
-
 
 \subsection{Assessing CoC effectiveness}
 
