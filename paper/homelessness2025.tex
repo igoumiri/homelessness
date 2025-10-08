@@ -30,7 +30,7 @@
 	runcolor=runcolor,
 }
 
-\title{A data-driven assessment of Continuum of Care effectiveness in addressing homelessness among older adults (65+) in California}
+\title{A data-driven assessment of Continuum of Care effectiveness in addressing homelessness in California}
 \author{Im\`ene R. Goumiri \and Amanda L. Muyskens}
 \date{Real Good AI \\[1em] July 2025}
 
@@ -39,20 +39,18 @@
 \maketitle
 
 \begin{abstract}
-Evaluating the effectiveness of California's Continuums of Care (CoCs) in addressing homelessness among older adults is confounded by external factors like population size and housing costs, which make direct comparisons misleading. This study utilizes a Random Forest model to control for these variables and provide a more equitable assessment of CoC performance. Our model confirms that total population is the primary predictor of homelessness totals, but also reveals that geographic location is a surprisingly strong factor, likely acting as a proxy for unmeasured socioeconomic conditions. By normalizing for population and housing costs, our counterfactual analysis identifies CoCs that are performing significantly better or worse than expected. Notably, several large urban CoCs, including those in Los Angeles County, demonstrate strong relative performance despite facing the greatest raw numbers, while regions like San Diego/Imperial and the northern coast show potential underperformance. These findings suggest a need to shift policy focus from raw counts towards a nuanced, data-driven evaluation to identify best practices and target interventions more effectively.
+Evaluating the effectiveness of California's Continuums of Care (CoCs) in addressing homelessness is confounded by external factors like population size and housing costs, which make direct comparisons misleading. This study utilizes a Random Forest model to control for these variables and provide a more equitable assessment of CoC performance. Our model confirms that total population is the primary predictor of homelessness totals, but also reveals that geographic location is a surprisingly strong factor, likely acting as a proxy for unmeasured socioeconomic conditions. By normalizing for population and housing costs, our counterfactual analysis identifies CoCs that are performing significantly better or worse than expected. Notably, several large urban CoCs, including those in Los Angeles County, demonstrate strong relative performance despite facing the greatest raw numbers, while regions like San Diego/Imperial and the northern coast show potential underperformance. These findings suggest a need to shift policy focus from raw counts towards a nuanced, data-driven evaluation to identify best practices and target interventions more effectively.
 \end{abstract}
 
 %\clearpage
 
 \section{Introduction}
 
-This report presents a data-driven assessment of Continuum of Care (CoC) effectiveness in addressing homelessness among adults aged 65 and over in California. The analysis uses publicly available data to model factors associated with homelessness counts at the CoC level, with the goal of identifying which CoCs perform differently than expected when corrected for their demographic and geographic context.
+This report presents a data-driven assessment of Continuum of Care (CoC) effectiveness in addressing homelessness in California. The analysis uses publicly available data to model factors associated with homelessness counts at the CoC level, with the goal of identifying which CoCs perform differently than expected when corrected for their demographic and geographic context.
 
 \subsection{Background: homelessness in california}
 
 California has a disproportionate share of the United States' unhoused population. In 2024, the state accounted for 24\% of the nation's total, despite having only 12\% of its population~\cite{ppic2025homelessness}. This crisis has worsened in recent years, with the number of people experiencing homelessness increasing by 6\% between 2020 and 2022~\cite{calich2025hdis}. In the literature, this growth is largely attributed to systemic factors, particularly a severe housing affordability crisis where housing costs have outpaced supply and incomes~\cite{ppic2025homelessness, huduser2019market}. While California has invested significant funds into programs aimed at reducing homelessness, a statewide audit noted a lack of information to assess the effectiveness of these programs, highlighting a need for evidence-based evaluation~\cite{ppic2025homelessness}.
-
-Within this context, older adults (65+) are a growing and vulnerable demographic. The number of adults 65 and older accessing homelessness services in California increased by over 166\% from 2017 to 2022~\cite{terner2023older}. A significant portion of this group experiences homelessness for the first time later in life, often due to economic shocks rather than chronic individual issues~\cite{terner2023older, cmaj2024late}. This demographic also faces compounded challenges, including high rates of disabling conditions and significant racial disparities, with Black, Indigenous, and Pacific Islander individuals being heavily overrepresented~\cite{terner2023older, calbudgetcenter2025rise}. These factors suggest that effective interventions must address both economic precarity and the specific needs of this aging population.
 
 \subsection{Research objectives}
 
@@ -60,11 +58,11 @@ This study evaluates the performance of California's 44 Continuums of Care (CoCs
 
 The primary objective is to evaluate CoC performance by comparing observed homelessness counts against a statistically derived expectation. To achieve this, we first develop a predictive model based on population and geographic factors to establish a ``prediction set" for each CoC—a range of expected homelessness counts given its context. By comparing a CoC's actual count to its prediction set, we can identify which are performing better or worse than anticipated. This study employs a Random Forest model, valued for its high predictive accuracy and ability to capture complex, non-linear interactions, to allow for a robust evaluation of CoC effectiveness.
 
-This work builds on other data-driven analyses of homelessness, such as HUD's studies of market factors~\cite{huduser2019market}, the California Policy Lab's predictive prevention models~\cite{capolicylab2025hpu}, and UCSF's large-scale surveys~\cite{ucsf2025studies}. Our contribution is the specific focus on the 65+ age group at the sub-state level in California and the use of a comparative modeling approach to identify relative CoC performance under controlled conditions. The goal is to produce interpretable results that can inform policy and resource allocation.
+This work builds on other data-driven analyses of homelessness, such as HUD's studies of market factors~\cite{huduser2019market}, the California Policy Lab's predictive prevention models~\cite{capolicylab2025hpu}, and UCSF's large-scale surveys~\cite{ucsf2025studies}. Our contribution is the use of a comparative modeling approach to identify relative CoC performance under controlled conditions. The goal is to produce interpretable results that can inform policy and resource allocation.
 
 \section{Data and methods}
 
-The analysis relies on an integrated dataset constructed from several public sources. The unit of analysis is the Continuum of Care (CoC). The key variables are the number of people experiencing homelessness categorized by year and by age group, the total population, the average housing cost, and geographic attributes.
+The analysis relies on an integrated dataset constructed from several public sources. The unit of analysis is the Continuum of Care (CoC). The key variables are the number of people experiencing homelessness, the total population, the average housing cost, and geographic attributes.
 
 \subsection{Dependent variable: homelessness counts}
 
@@ -77,8 +75,7 @@ The outcome variable is the count of individuals experiencing homelessness in ea
 \subsection{Independent variables: year, age group, population, geography, and housing costs}
 
 \subsubsection{Year and age group}
-The HDIS data is grouped by year, from 2017 to 2023, and by the following age groups: under 18, 18-24, 25-34, 35-44, 45-54, 55-64, 65+, unknown, and invalid.
-We have chosen to discard the unknown and invalid categories to minimize noise.
+The HDIS data is grouped by year, from 2017 to 2023, and by several age groups. For this analysis, we summed the counts across all valid age groups (under 18, 18-24, 25-34, 35-44, 45-54, 55-64, and 65+) to compute the total unhoused population for each CoC. The `unknown' and `invalid' age categories were discarded to minimize noise.
 
 \subsubsection{Population estimates}
 To contextualize homelessness counts, population data for each CoC was required.
@@ -182,7 +179,7 @@ While the model confirms that population is the primary driver, our main goal is
     \includegraphics[width=0.5\linewidth, trim={1.5in 1.5in 1in 1in}, clip]{figures/maps/prediction_set}
     \caption{
         \label{fig:maps:prediction}
-        Actual 65+ unhoused population size (left) and predicted 65+ unhoused population when controlling for population, spatial lag, and housing cost (right) in California CoCs in 2023 (log scale).
+        Actual unhoused population size (left) and predicted unhoused population when controlling for population, spatial lag, and housing cost (right) in California CoCs in 2023 (log scale).
     }
 \end{figure}
 
@@ -203,13 +200,13 @@ While the model confirms that population is the primary driver, our main goal is
     \includegraphics[width=0.5\linewidth, trim={0.5in 1.5in 1in 1in}, clip]{figures/maps/diff_unhoused_count}
     \caption{
         \label{fig:maps:prop}
-        65+ unhoused proportion relative to total population (left) and relative discrepancy of leave-one-out prediction of homelessness counts vs actual counts for each CoC (right).
+        Unhoused proportion relative to total population (left) and relative discrepancy of leave-one-out prediction of homelessness counts vs actual counts for each CoC (right).
     }
 \end{figure}
 
 This normalized comparison reveals a landscape of CoC performance that is markedly different from the one suggested by the raw homelessness counts. Two main regions of concern emerge, where homelessness is predicted to be higher than expected. The most prominent is in the southern part of the state, centered on Imperial and San Diego counties. A secondary area of concern appears in the northern coastal region, including Marin, Sonoma, and Humboldt counties. This suggests that factors unique to these CoCs---potentially related to local economic conditions, resource allocation, or specific policies---may be contributing to poorer outcomes. These areas warrant closer, qualitative investigation to understand the specific challenges they face.
 
-Perhaps the most compelling finding is the emergence of CoCs that are performing significantly better than expected. This group includes large county-level CoCs like Los Angeles, Riverside, and San Bernardino, as well as smaller city-level CoCs within Los Angeles County: Glendale, Pasadena, and Long Beach. These CoCs have some of the highest absolute numbers of unhoused seniors, but our model suggests they are managing the crisis more effectively than their large populations and high housing costs would predict. When these factors are neutralized, these CoCs show some of the lowest predicted homelessness counts in the state. This finding does not diminish the scale of the crisis in these regions, but it reframes the narrative. It suggests that, relative to the scale of their challenge, the strategies employed by these large urban CoCs may be comparatively effective.
+Perhaps the most compelling finding is the emergence of CoCs that are performing significantly better than expected. This group includes large county-level CoCs like Los Angeles, Riverside, and San Bernardino, as well as smaller city-level CoCs within Los Angeles County: Glendale, Pasadena, and Long Beach. These CoCs have some of the highest absolute numbers of unhoused individuals, but our model suggests they are managing the crisis more effectively than their large populations and high housing costs would predict. When these factors are neutralized, these CoCs show some of the lowest predicted homelessness counts in the state. This finding does not diminish the scale of the crisis in these regions, but it reframes the narrative. It suggests that, relative to the scale of their challenge, the strategies employed by these large urban CoCs may be comparatively effective.
 
 This analysis provides a new lens for policymakers and support organizations. Instead of focusing solely on the CoCs with the highest raw numbers, it may be more impactful to direct support and technical assistance to the regions of concern identified by the model---areas that appear to be underperforming regardless of their size. At the same time, the CoCs performing better than expected may offer valuable lessons and scalable strategies that could be adapted for use in other CoCs across the state.
 
